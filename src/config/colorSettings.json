@@ -1,4 +1,7 @@
 {
+    "link":{
+"public":"http://localhost:3001/api/"
+    },
     "menu":{
         "theme":"#FBA1B7"
     }

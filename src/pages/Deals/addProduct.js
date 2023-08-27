@@ -21,9 +21,12 @@ import {
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { UploadOutlined } from '@ant-design/icons';
+import config from '../../config/config';
+import axios from 'axios';
+
 export default function AddProduct() {
 
-  const [state, setState] = useState({ name: "",quantity:"",price:"",image:"",option:"" })
+  const [state, setState] = useState({ name: "", quantity: "", price: "", image: "", option: "" })
 
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('inline');
@@ -31,31 +34,58 @@ export default function AddProduct() {
   let extraCard = <Space><Badge color="red" /><Badge color="yellow" /><Badge color="green" /></Space>;
 
 
-const onTextChange =(e)=>{
-  setState({...state,[e.target.name]:e.target.value})
+  const onTextChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value })
 
-}
-const onFormSubmit = (e) =>{
-  e.preventDefault()
-  console.log(state)
+  }
+  const onFormSubmit = (e) => {
+    e.preventDefault()
+    console.log(state)
 
-}
-const handleChange = (value) => {
-  setState({...state,"option":value})
-};
-const optionData =[
-        { value: 'jack', label: 'Jack' },
-        { value: 'lucy', label: 'Lucy' },
-        { value: 'Yiminghe', label: 'yiminghe' },
-        { value: 'disabled', label: 'Disabled', disabled: true },
-      ]
+    axios.post(config.public_url + "product", state).then(res => {
+      console.log(res.data)
+    })
 
+  }
+  const handleChange = (value) => {
+    setState({ ...state, "option": value })
+  };
+  const optionData = [
+    { value: 'jack', label: 'Jack' },
+    { value: 'lucy', label: 'Lucy' },
+    { value: 'Yiminghe', label: 'yiminghe' },
+    { value: 'disabled', label: 'Disabled', disabled: true },
+  ]
+  const handleChangeFile = info => {
+    console.log(info)
+   
+    //     .then(async res => {
+    //       if (res.data.Status === 1) {
+    //         message.destroy();
+    //         await message.success(res.data.msg, 1);
+    //       } else if (res.data.Status === 0) message.error(res.data.msg, 1);
+    //     });
+    // }
+  }
+
+
+  // const beforeUpload = (file) => {
+  //   const isJpgOrPng = file.type === 'image/jpeg';
+  //   if (!isJpgOrPng) {
+  //     message.error('You can only upload JPG file!');
+  //   }
+  //   const isLt2M = file.size / 1024 / 1024 < 0.5;
+  //   if (!isLt2M) {
+  //     message.error('File must smaller than 500KB!');
+  //   }
+  //   return isJpgOrPng && isLt2M;
+  // }
   return (<>
-<Row  justify={'end'}>
-  <Button type='primary'>Bulk Upload</Button>
-</Row>
+    <Row justify={'end'}>
+      <Button type='primary'>Bulk Upload</Button>
+    </Row>
 
-    <Card title="Add Product" size='small' shadow={"large"} extra={extraCard} style={{ boxShadow: "1px 2px 10px #272829",marginTop:"5px" }}
+    <Card title="Add Product" size='small' shadow={"large"} extra={extraCard} style={{ boxShadow: "1px 2px 10px #272829", marginTop: "5px" }}
       actions={[
         <Space align='start'>
           <Button type='primary' onClick={onFormSubmit}  >Add Product</Button>
@@ -88,20 +118,41 @@ const optionData =[
       <Form layout='inline'>
         <Form.Item label="Product Image">
           <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            listType="picture"
-            maxCount={1}
+           onChange={(info)=>{
+            // preventDefault()
+            let formData = new FormData();
+            //   formData.append('USER_ID', );
+        
+            //   formData.append('path', "/personal/basic/profile/photo/");
+            formData.append('filename', info.file.name);
+            //   formData.append('key', config.key);
+            formData.append('file', info.file.originFileObj);
+            console.log("asdfa",info.file.originFileObj)
+            // formData({file:info.file.originFileObj,filename:info.file.name})
+            console.log(formData)
+        
+        
+              axios.post(config.public_url+'file', formData).then(res=>{
+                console.log(res.data)
+                console.log(res.data.data.file_path)
+                setState({...state,file_path:res.data.data.file_path,})
+              })
+
+           }}
+
+
+
           >
             <Button icon={<UploadOutlined />}>click to Upload</Button>
           </Upload>
         </Form.Item>
         <Form.Item label="Select">
-        <Select
-      defaultValue="lucy"
-      style={{ width: 120 }}
-      onChange={handleChange}
-      options={optionData}
-    />
+          <Select
+            defaultValue="lucy"
+            style={{ width: 120 }}
+            onChange={handleChange}
+            options={optionData}
+          />
         </Form.Item>
 
 
@@ -116,7 +167,7 @@ const optionData =[
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
-          setState({...state,description:data})
+          setState({ ...state, description: data })
 
           console.log({ event, editor, data });
         }}

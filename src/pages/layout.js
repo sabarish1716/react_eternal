@@ -12,6 +12,7 @@ import { Layout, ThemeConfig, ConfigProvider, Menu, Button, theme, Image } from 
 import { items } from '../utils/layoutNavItems';
 import Demo from './demo';
 import Addproduct from './Deals/addProduct'
+import GetProduct from './Deals/getProduct';
 const { Header, Sider, Content } = Layout;
 const { getDesignToken, useToken } = theme;
 
@@ -117,7 +118,7 @@ const App = () => {
                             background: colorBgContainer,
                         }}
                     >
-                        {state.key === '1' ? <Demo /> : state.key === '3' ? <Addproduct /> : ""}
+                        {state.key === '1' ? <Demo /> : state.key === '3' ? <Addproduct /> : state.key === '4'?<GetProduct/>:""}
                     </Content>
                 </Layout>
             </Layout>
