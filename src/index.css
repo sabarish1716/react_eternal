@@ -16,9 +16,10 @@ body {
 
 .userPageHeader .ant-page-header,
 .ant-card-head {
-  background: #0d3660 !important;
+  background: #5c2392 !important;
   color: white !important;
 }
+
 
 .userPageHeader .ant-page-header * {
   color: white !important;
@@ -113,8 +114,72 @@ Title {
 
 .ant-layout-sider-children {
   height: 100vh !important;
+  /* background: #5c2392 !important; */
+ 
+}
+/* 
+.ant-menu-item{
+  background: #5c2392 !important;
+  color:#eff2f5;
+
+}
+.ant-menu-item-active{
+  background: #5c2392 !important;
+  color:#fe603b;
+  
+}
+.ant-menu-submenu-title{
+  background: #5c2392 !important;
+  color:#eff2f5;
+}
+.ant-menu-submenu-vertical{
+  background: #5c2392 !important;
+  color:#eff2f5;
 }
 
+.ant-tooltip-open{
+  background: #5c2392 !important;
+  color: #fe603b;
+
+
+}
+.ant-tooltip-close{
+  background: #5c2392 !important;
+  color: #fe603b;
+
+
+}
+.ant-tooltip{
+  background: #5c2392 !important;
+  color: #fe603b;
+
+
+}
+.ant-tooltip-arrow{
+  background: #5c2392 !important;
+
+}
+.ant-menu-item-selected{
+  background-color: #8b9223;
+  color:#eff2f5;
+
+}
+.ant-menu-title-content{
+  color:#eff2f5;
+}
+.ant-menu-item-active{
+  background: #f86401 !important;
+
+  color:#eff2f5;
+
+}
+ */
+
+
+.ant-layout-header{
+  background:#16287a;
+
+}
 /*
 .ant-page-header,
 .ant-card-head {

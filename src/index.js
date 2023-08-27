@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter as Router } from "react-router-dom";
+import { createHashHistory } from 'history';
 const Root = (
-    <Router basename={'/eternaladmin2023'} >
+    <Router basename={'/base'} history={createHashHistory}>
         <App/>
     </Router>
 );

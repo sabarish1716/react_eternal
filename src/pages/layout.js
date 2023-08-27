@@ -6,82 +6,122 @@ import {
 } from '@ant-design/icons';
 import logo from '../images/adminlogo.png';
 
-import  menuColor from '../config/colorSettings.json'
+import menuColor from '../config/colorSettings.json'
 
-import { Layout, ConfigProvider, Menu, Button, theme, Image } from 'antd';
+import { Layout, ThemeConfig, ConfigProvider, Menu, Button, theme, Image } from 'antd';
 import { items } from '../utils/layoutNavItems';
 import Demo from './demo';
 import Addproduct from './Deals/addProduct'
 const { Header, Sider, Content } = Layout;
+const { getDesignToken, useToken } = theme;
 
-const {menu} = menuColor
+
+const { menu } = menuColor
 const App = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const [state,setState] = useState({key:1})
+    const [state, setState] = useState({ key: 1 })
 
-    const onMenuClick = (e) =>{
-        setState({key:e.key})
+    const onMenuClick = (e) => {
+        setState({ key: e.key })
+
+    }
+    const theme2 = {
+        token: {
+            colorPrimary: "#3e73bd",
+            colorInfo: "#3e73bd",
+            colorPrimaryBg: "#325dc3",
+            colorPrimaryBgHover: "#1b4a9a",
+            colorPrimaryBorder: "#1865d2",
+            colorPrimaryBorderHover: "#1d66ce",
+            colorBgBase: "#321010",
+            colorBorder: "#2f0404",
+            colorBorderSecondary: "#0e0101",
+            fontSize: 20
+        },
+        algorithm: "dark"
     }
     const {
-        token: { colorBgContainer },
-    } = theme.useToken();
+        colorBgContainer
+    } = theme.useToken(
+        );
+
+
+
+
+    // By static function
+    // const globalToken = getDesignToken(config);
+
+
+
     return (
         <>
-        <ConfigProvider
-    theme={{
-      token: {
-        // Seed Token
-        // colorPrimary: '#D5FFE4',
-        borderRadius: 2,color:"$040D12",
-
-
-        // Alias Token
-        colorBgContainer: '#6F61C0',
-      },
-    }}>
-        <Layout>
-            <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" ><Image src={logo}></Image></div>
-                <Menu
-                    theme={menu.theme}
-                    mode="inline"
-                    defaultSelectedKeys={['1']}
-                    items={items}
-                    onClick={onMenuClick}
-                />
-            </Sider>
             <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                >
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
+                <ConfigProvider theme={{
+                    token: {
+                        colorPrimary: "#3e73bd",
+                        colorInfo: "#3e73bd",
+                        colorPrimaryBg: "#325dc3",
+                        colorPrimaryBgHover: "#1b4a9a",
+                        colorPrimaryBorder: "#1865d2",
+                        colorPrimaryBorderHover: "#1d66ce",
+                        colorBgBase: "#321010",
+                        colorBorder: "#2f0404",
+                        colorBorderSecondary: "#0e0101",
+                        fontSize: 20
+                    },
+                }} >
+
+                    <Sider trigger={null} collapsible collapsed={collapsed}>
+                        <div className="demo-logo-vertical" ><Image src={logo}></Image></div>
+                        <ConfigProvider theme={{
+                            "token": {
+                                "colorPrimaryBg": "#3c89e8",
+                                "colorPrimaryBgHover": "#1554ad",
+                                "colorBgBase": "#111a2c",
+                                "colorTextBase": "#fffafa"
+                            }
+                        }} >
+                            <Menu
+                                mode="inline"
+                                defaultSelectedKeys={['1']}
+                                // theme={}
+                                items={items}
+                                onClick={onMenuClick}
+                            />
+                        </ConfigProvider>
+                    </Sider>
+                </ConfigProvider>
+                <Layout>
+                    <Header
                         style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
+                            padding: 0,
+
                         }}
-                    />
-                </Header>
-                <Content
-                    style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                    }}
-                >
-              {state.key === '1'?<Demo/>:state.key === '3' ?<Addproduct/>:""}
-                </Content>
+                    >
+                        <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined style={{ color: '#F5F5F5' }} /> : <MenuFoldOutlined style={{ color: '#F5F5F5' }} />}
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                fontSize: '16px',
+                                width: 64,
+                                height: 64,
+                            }}
+                        />
+                    </Header>
+                    <Content
+                        style={{
+                            margin: '24px 16px',
+                            padding: 24,
+                            minHeight: 280,
+                            background: colorBgContainer,
+                        }}
+                    >
+                        {state.key === '1' ? <Demo /> : state.key === '3' ? <Addproduct /> : ""}
+                    </Content>
+                </Layout>
             </Layout>
-            </Layout>
-  </ConfigProvider>
-  </>
+        </>
 
     );
 };
