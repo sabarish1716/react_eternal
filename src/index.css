@@ -10,6 +10,9 @@ body {
   margin-top: 4%;
 }
 
+.ant.button{
+  background-color: #0a3d62;
+}
 .ck-editor {
   font-family: "Futura Std Book" !important;
 }

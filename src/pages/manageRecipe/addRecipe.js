@@ -28,7 +28,7 @@ import { DeleteOutlined, LoadingOutlined, PlusOutlined, UploadOutlined } from '@
 import config from '../../config/config';
 import axios from 'axios';
 
-export default function AddProduct(props) {
+export default function AddRecipe(props) {
 
   const [state, setState] = useState({ name: "", quantity: "", price: "", image: "", option: "", key: true })
 
@@ -40,7 +40,7 @@ let id = props.id
   if (props.id) {
    
       console.log(props)
-      axios.get(config.public_url + 'product/' + props.id).then(res => {
+      axios.get(config.public_url + 'recipe/' + props.id).then(res => {
         setState({ ...state, name: res.data.name, quantity: res.data.quantity, price: res.data.price, key: false ,id:props.id})
       })
   }
@@ -58,9 +58,9 @@ let id = props.id
     e.preventDefault()
     console.log(state)
 
-    axios.post(config.public_url + "product", state).then(res => {
+    axios.post(config.public_url + "recipe", state).then(res => {
       console.log(res.data)
-      message.success("Product added successfully !!")
+      message.success("Recipe added successfully !!")
       setState({name: "", quantity: "", price: "", image: "", option: "", key: true })
     })
 
@@ -69,9 +69,9 @@ let id = props.id
     e.preventDefault()
     console.log(state)
 console.log(state.id)
-    axios.put(config.public_url + "product/" + state.id, state).then(res => {
+    axios.put(config.public_url + "recipe/" + state.id, state).then(res => {
       console.log(res.data)
-      message.success("Product Edited Successfully !!!")
+      message.success("Recipe Edited Successfully !!!")
     })
   }
   const handleChange = (value) => {
@@ -87,7 +87,7 @@ console.log(state.id)
   const uploadButton = (
     <div>
       {state.loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div className="ant-upload-text">Product Image</div>
+      <div className="ant-upload-text">Recipe Image</div>
     </div>
   );
 
@@ -148,7 +148,7 @@ console.log(state.id)
     return isJpgOrPng && isLt2M;
   }
   let { key } = state
-  let title = key ? "Add Product" : "Edit Product"
+  let title = key ? "Add Recipe" : "Edit Recipe"
   return (<>
     <Row justify={'end'}>
       {key ? <Button type='primary'>Bulk Upload</Button> : ""}
@@ -157,7 +157,7 @@ console.log(state.id)
       actions={[<></>, <></>,
       <Space align='start'>
 
-        {key ? <Button type='primary' onClick={onFormSubmit}   >Add Product</Button> : <Button type='primary' onClick={onEditSubmit}  >Edit Product</Button>}
+        {key ? <Button type='primary' onClick={onFormSubmit}   >Add Recipe</Button> : <Button type='primary' onClick={onEditSubmit}  >Edit Recipe</Button>}
 
       </Space>]}
     >
@@ -168,12 +168,12 @@ console.log(state.id)
 
         <Col xs={24} style={{ textAlign: "center" }}>
           <Descriptions bordered column={{ xxl: 2, xl: 1, sm: 1, xs: 1 }} >
-            <Descriptions.Item label="Product Name">
+            <Descriptions.Item label="Recipe Name">
               <Input name="name" onChange={onTextChange} value={state.name} />
 
 
             </Descriptions.Item>
-            <Descriptions.Item label="Product Image" className="upload" >
+            <Descriptions.Item label="Recipe Image" className="upload" >
               <Row>
                 <Col xs={24}>
                   <Upload
@@ -202,20 +202,11 @@ console.log(state.id)
               </Row>
             </Descriptions.Item>
 
-            <Descriptions.Item label="Quantity">
-              <Col xs={24} style={{ marginLeft: "-4px" }} className="mt-2">
-                <Input name="quantity" onChange={onTextChange} value={state.quantity} />
-
-              </Col>
-            </Descriptions.Item>
-            <Descriptions.Item label="Price">
-              <Input name="price" onChange={onTextChange} value={state.price} />
-
-            </Descriptions.Item>
-            <Descriptions.Item label="Product Incredients">
+          
+            <Descriptions.Item label="Recipe Descripton">
               <CKEditor
                 editor={ClassicEditor}
-                data="<p>type your incredients</p>"
+                data="<p>type your Descripton</p>"
                 onReady={editor => {
                   // You can store the "editor" and use when it is needed.
                   console.log('Editor is ready to use!', editor);

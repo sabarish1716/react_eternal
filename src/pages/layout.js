@@ -12,9 +12,13 @@ import { Layout, ThemeConfig, ConfigProvider, Menu, Button, theme, Image } from 
 import { items } from '../utils/layoutNavItems';
 import Demo from './demo';
 import Addproduct from './Deals/addProduct'
-import GetProduct from './Deals/getProduct';
+import GetProduct from './Deals/viewProduct';
 
-import {Outlet} from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import AddSpices from './Spices/addSpices';
+import ViewSpices from './Spices/viewSpices';
+import AddRecipe from './manageRecipe/addRecipe';
+import ViewRecipe from './manageRecipe/viewRecipe';
 const { Header, Sider, Content } = Layout;
 const { getDesignToken, useToken } = theme;
 
@@ -119,8 +123,15 @@ const App = (Component) => {
                             background: colorBgContainer,
                         }}
                     >
-                         {/* <Component /> */}
-                        {state.key === '1' ? <Demo /> : state.key === '3' ? <Addproduct  /> : state.key === '4'?<GetProduct/>:""}
+                        {/* <Component /> */}
+                        {state.key === '1' ?
+                            <Demo /> : state.key === '3' ?
+                                <Addproduct /> : state.key === '4' ?
+                                    <GetProduct /> : state.key === '5'
+                                        ? <AddSpices /> : state.key === '6'
+                                            ? <ViewSpices /> : state.key === '7'
+                                                ? <AddRecipe /> : state.key === '8'
+                                                    ? <ViewRecipe /> : ""}
                     </Content>
                 </Layout>
             </Layout>
