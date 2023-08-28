@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Cascader,
@@ -24,16 +24,24 @@ import { UploadOutlined } from '@ant-design/icons';
 import config from '../../config/config';
 import axios from 'axios';
 
-export default function AddProduct() {
+export default function AddProduct(props) {
 
-  const [state, setState] = useState({ name: "", quantity: "", price: "", image: "", option: "" })
+  const [state, setState] = useState({ name: "", quantity: "", price: "", image: "", option: "", key: true })
 
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('inline');
 
-  let extraCard = <Space><Badge color="red" /><Badge color="yellow" /><Badge color="green" /></Space>;
+  let extraCard = <Space ><Badge color="red" /><Badge color="yellow" /><Badge color="green" /></Space>;
 
+  useEffect(() => {
+    if (props.id) {
+      console.log(props)
+      axios.get(config.public_url + 'product/' + props.id).then(res => {
+        setState({ ...state, name: res.data.name, quantity: res.data.quantity, price: res.data.price, key: false })
+      })
+    }
 
+  }, {})
   const onTextChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value })
 
@@ -47,6 +55,14 @@ export default function AddProduct() {
     })
 
   }
+  const onEditSubmit = (e) => {
+    e.preventDefault()
+    console.log(state)
+
+    axios.put(config.public_url + "product/" + props.id, state).then(res => {
+      console.log(res.data)
+    })
+  }
   const handleChange = (value) => {
     setState({ ...state, "option": value })
   };
@@ -56,17 +72,7 @@ export default function AddProduct() {
     { value: 'Yiminghe', label: 'yiminghe' },
     { value: 'disabled', label: 'Disabled', disabled: true },
   ]
-  const handleChangeFile = info => {
-    console.log(info)
-   
-    //     .then(async res => {
-    //       if (res.data.Status === 1) {
-    //         message.destroy();
-    //         await message.success(res.data.msg, 1);
-    //       } else if (res.data.Status === 0) message.error(res.data.msg, 1);
-    //     });
-    // }
-  }
+
 
 
   // const beforeUpload = (file) => {
@@ -80,15 +86,18 @@ export default function AddProduct() {
   //   }
   //   return isJpgOrPng && isLt2M;
   // }
+  let { key } = state
+  let title = key ? "Add Product" : "Edit Product"
   return (<>
     <Row justify={'end'}>
-      <Button type='primary'>Bulk Upload</Button>
+      {key ? <Button type='primary'>Bulk Upload</Button> : ""}
     </Row>
 
-    <Card title="Add Product" size='small' shadow={"large"} extra={extraCard} style={{ boxShadow: "1px 2px 10px #272829", marginTop: "5px" }}
+    <Card title={title} size='small' shadow={"large"} extra={extraCard} style={{ boxShadow: "1px 2px 10px #272829", marginTop: "5px" }}
       actions={[
         <Space align='start'>
-          <Button type='primary' onClick={onFormSubmit}  >Add Product</Button>
+
+          {key ? <Button type='primary' onClick={onFormSubmit}  >Add Product</Button> : <Button type='primary' onClick={onEditSubmit}  >Edit Product</Button>}
 
         </Space>]}
     >
@@ -118,27 +127,27 @@ export default function AddProduct() {
       <Form layout='inline'>
         <Form.Item label="Product Image">
           <Upload
-           onChange={(info)=>{
-            // preventDefault()
-            let formData = new FormData();
-            //   formData.append('USER_ID', );
-        
-            //   formData.append('path', "/personal/basic/profile/photo/");
-            formData.append('filename', info.file.name);
-            //   formData.append('key', config.key);
-            formData.append('file', info.file.originFileObj);
-            console.log("asdfa",info.file.originFileObj)
-            // formData({file:info.file.originFileObj,filename:info.file.name})
-            console.log(formData)
-        
-        
-              axios.post(config.public_url+'file', formData).then(res=>{
+            onChange={(info) => {
+              // preventDefault()
+              let formData = new FormData();
+              //   formData.append('USER_ID', );
+
+              //   formData.append('path', "/personal/basic/profile/photo/");
+              formData.append('filename', info.file.name);
+              //   formData.append('key', config.key);
+              formData.append('file', info.file.originFileObj);
+              console.log("asdfa", info.file.originFileObj)
+              // formData({file:info.file.originFileObj,filename:info.file.name})
+              console.log(formData)
+
+
+              axios.post(config.public_url + 'file', formData).then(res => {
                 console.log(res.data)
                 console.log(res.data.data.file_path)
-                setState({...state,file_path:res.data.data.file_path,})
+                setState({ ...state, file_path: res.data.data.file_path, })
               })
 
-           }}
+            }}
 
 
 
@@ -161,15 +170,11 @@ export default function AddProduct() {
       <CKEditor
         editor={ClassicEditor}
         data="<p>type your incredients</p>"
-        onReady={editor => {
-          // You can store the "editor" and use when it is needed.
-          console.log('Editor is ready to use!', editor);
-        }}
+
         onChange={(event, editor) => {
           const data = editor.getData();
           setState({ ...state, description: data })
 
-          console.log({ event, editor, data });
         }}
         onBlur={(event, editor) => {
           console.log('Blur.', editor);
@@ -178,6 +183,7 @@ export default function AddProduct() {
           console.log('Focus.', editor);
         }}
       />
+
 
     </Card>
   </>)

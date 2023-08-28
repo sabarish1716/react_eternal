@@ -13,12 +13,13 @@ import { items } from '../utils/layoutNavItems';
 import Demo from './demo';
 import Addproduct from './Deals/addProduct'
 import GetProduct from './Deals/getProduct';
+
+import {Outlet} from 'react-router-dom'
 const { Header, Sider, Content } = Layout;
 const { getDesignToken, useToken } = theme;
 
-
 const { menu } = menuColor
-const App = () => {
+const App = (Component) => {
     const [collapsed, setCollapsed] = useState(false);
     const [state, setState] = useState({ key: 1 })
 
@@ -118,7 +119,8 @@ const App = () => {
                             background: colorBgContainer,
                         }}
                     >
-                        {state.key === '1' ? <Demo /> : state.key === '3' ? <Addproduct /> : state.key === '4'?<GetProduct/>:""}
+                         {/* <Component /> */}
+                        {state.key === '1' ? <Demo /> : state.key === '3' ? <Addproduct  /> : state.key === '4'?<GetProduct/>:""}
                     </Content>
                 </Layout>
             </Layout>
